@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_cors import CORS
 from app.config import Config
 # import sys
 # sys.path.append('C:/Users/Beto/Desktop/BackEnd--Proyecto-Final---Programacion-4-main/Gimnasio/app')
@@ -21,6 +22,8 @@ app.register_blueprint(actividad_bp, url_prefix='/actividades')
 app.register_blueprint(inscripcion_bp, url_prefix='/inscripciones')
 app.register_blueprint(empleado_bp, url_prefix='/empleados')
 app.register_blueprint(pago_bp, url_prefix='/pagos')
+
+CORS(app)
 
 if __name__ == "__main__":
     app.run(debug=True)
