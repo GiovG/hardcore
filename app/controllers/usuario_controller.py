@@ -11,24 +11,20 @@ usuario_bp = Blueprint('usuarios', __name__)
 def registro():
     data = request.get_json()
 
-    if not all(key in data for key in ['nombre', 'email', 'password', 'rol', 'fecha_registro']):
+    if not all(key in data for key in ['nombre', 'apellido', 'correo', 'dni', 'contrasena']):
         return jsonify({"msg": "Faltan datos necesarios"}), 400
 
     # Crear nuevo usuario
     usuario_data = {
         'nombre': data['nombre'],
-        'email': data['email'],
-        'password': data['password'],
-        'rol': data['rol'],
-        'estado_pago': data.get('estado_pago', 'No pagado'),
-        'fecha_registro': data['fecha_registro'],
-        'fecha_baja': data.get('fecha_baja', None),
-        'fecha_ultimo_pago': data.get('fecha_ultimo_pago', None),
-        'cuota_pagada': data.get('cuota_pagada', None)
+        'apellido': data['apellido'],
+        'correo': data['correo'],
+        'dni': data['dni'],
+        'contrasena': data['contrasena'],
     }
 
     # Verificar si el email ya existe
-    if Usuario.get_by_email(usuario_data['email']):
+    if Usuario.get_by_email(usuario_data['correo']):
         return jsonify({"msg": "El correo ya esta registrado"}), 400
 
     # Crear usuario en la base de datos
@@ -41,7 +37,7 @@ def registro():
 def login():
     data = request.get_json()
 
-    email = data.get('email')
+    email = data.get('correo')
     password = data.get('password')
 
     if not email or not password:
@@ -49,7 +45,7 @@ def login():
 
     usuario = Usuario.get_by_email(email)
 
-    if usuario and Usuario.verify_password(usuario['password'], password):
+    if usuario and Usuario.verify_password(usuario['contrasena'], password):
         # Crear el token de acceso
         access_token = create_access_token(identity=usuario['id'])
         return jsonify({"msg": "Inicio de sesion exitoso", "access_token": access_token}), 200
