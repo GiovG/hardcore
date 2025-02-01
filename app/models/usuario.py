@@ -7,7 +7,7 @@ def get_db_connection():
         host=Config.MYSQL_HOST,
         user=Config.MYSQL_USER,
         password=Config.MYSQL_PASSWORD,
-        database=Config.MYSQL_DATABASE
+        database=Config.MYSQL_DB
     )
 
 class Usuario:
